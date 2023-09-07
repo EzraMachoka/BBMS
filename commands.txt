@@ -1,5 +1,4 @@
   add-donation
   create-table
   delete-donation
-  list-donations
   update-donation
