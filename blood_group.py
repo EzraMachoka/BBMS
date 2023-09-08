@@ -12,5 +12,3 @@ class BloodGroup(Base):
         
     @classmethod
     def all(cls):
-        
-        

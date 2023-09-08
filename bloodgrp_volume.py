@@ -9,3 +9,5 @@ class BloodVolume(Base):
     blood_group_id = Column(Integer, ForeignKey('blood_groups.id'))
     blood_group = relationship('BloodGroup', back_populates='blood_volumes')
     volume = Column(Integer)
+    donor = relationship("Donors",back_populates='blood_volume')
+    blood_volume = relationship("BloodVolume",back_populates='donors')

@@ -29,12 +29,32 @@ def add_donation(group, volume, date):
     session.commit()
     click.echo('Donation added successfully.')
 
+
 @cli.command()
 def list_donations():
-    donations = session.query(Donor, BloodGroup, BloodVolume).join(BloodGroup).join(BloodVolume).all()
+    # Query the data
+    donations = session.query(Donor, BloodGroup, BloodVolume).all()
+
+    # Create a dictionary to store aggregated data
+    aggregated_data = {}
 
     for donor, blood_group, blood_volume in donations:
-        click.echo(f"Donor: {donor.name}, Blood Group: {blood_group.group_name}, Volume: {blood_volume.volume}")
+        donor_name = donor.name
+        blood_group_name = blood_group.group_name
+        blood_volume_value = blood_volume.volume
+
+        # Check if the donor name and blood group name combination exists in the dictionary
+        if (donor_name, blood_group_name) not in aggregated_data:
+            # If not, create a new entry with initial volume
+            aggregated_data[(donor_name, blood_group_name)] = blood_volume_value
+        else:
+            # If yes, add the volume to the existing entry
+            aggregated_data[(donor_name, blood_group_name)] += blood_volume_value
+
+    # Print out the aggregated data
+    for (donor_name, blood_group_name), total_volume in aggregated_data.items():
+        click.echo(f"Donor: {donor_name}, Blood Group: {blood_group_name}, Total Volume: {total_volume} ml")
+
 
 @cli.command()
 @click.argument('donor_id', type=int)

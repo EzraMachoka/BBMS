@@ -9,3 +9,4 @@ class Donor(Base):
     name = Column(String(50))
     blood_group_id = Column(Integer, ForeignKey('blood_groups.id'))
     blood_group = relationship('BloodGroup', back_populates='donors')
+   
